@@ -35,4 +35,5 @@ func FormatValidationError(err error) []string {
 		errors = append(errors, e.Error())
 	}
 
+	return errors
 }
