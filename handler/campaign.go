@@ -17,7 +17,7 @@ func NewCampaignHandler(service campaign.Service) *campaignHandler {
 	return &campaignHandler{service}
 }
 
-func (h *campaignhandler) GetCampaigns(c *gin.Context) {
+func (h *campaignHandler) GetCampaigns(c *gin.Context) {
 	userID, _ := strconv.Atoi(c.Query("user_id"))
 
 	campaigns, err := h.service.GetCampaigns(userID)
