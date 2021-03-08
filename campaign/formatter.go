@@ -14,16 +14,22 @@ type CampaignFormatter struct {
 }
 
 type CampaignDetailFormatter struct {
-	ID               int      `json:"id"`
-	UserID           int      `json:"user_id"`
-	Name             string   `json:"name"`
-	ShortDescription string   `json:"short_description"`
-	Description      string   `json:"description"`
-	ImageURL         string   `json:"image_url"`
-	GoalAmount       int      `json:"goal_amount"`
-	CurrentAmount    int      `json:"current_amount"`
-	Slug             string   `json:"slug"`
-	Perks            []string `json:"perks"`
+	ID               int                   `json:"id"`
+	UserID           int                   `json:"user_id"`
+	Name             string                `json:"name"`
+	ShortDescription string                `json:"short_description"`
+	Description      string                `json:"description"`
+	ImageURL         string                `json:"image_url"`
+	GoalAmount       int                   `json:"goal_amount"`
+	CurrentAmount    int                   `json:"current_amount"`
+	Slug             string                `json:"slug"`
+	Perks            []string              `json:"perks"`
+	User             CampaignUserFormatter `json:"user"`
+}
+
+type CampaignUserFormatter struct {
+	Name     string `json:"name"`
+	ImageURL string `json:"image_url"`
 }
 
 func FormatCampaign(campaign Campaign) CampaignFormatter {
@@ -80,6 +86,12 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 	}
 
 	campaignDetailFormatter.Perks = perks
+
+	campaignUserFormatter := CampaignUserFormatter{}
+	campaignUserFormatter.Name = campaign.User.Name
+	campaignUserFormatter.ImageURL = campaign.User.AvatarFileName
+
+	campaignDetailFormatter.User = campaignUserFormatter
 
 	return campaignDetailFormatter
 }
