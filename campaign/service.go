@@ -1,6 +1,7 @@
 package campaign
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/gosimple/slug"
@@ -74,11 +75,18 @@ func (s *service) UpdateCampaign(inputID GetCampaignDetailInput, inputData Creat
 		return campaign, err
 	}
 
+	if campaign.UserID != inputData.User.ID {
+		return campaign, errors.New("Unauthorized access")
+	}
+
 	campaign.Name = inputData.Name
 	campaign.ShortDescription = inputData.ShortDescription
 	campaign.Description = inputData.Description
 	campaign.GoalAmount = inputData.GoalAmount
 	campaign.Perks = inputData.Perks
+
+	slugCandidate := fmt.Sprintf("%s %d", inputData.Name, inputData.User.ID)
+	campaign.Slug = slug.Make(slugCandidate)
 
 	updatedCampaign, err := s.repository.Update(campaign)
 	if err != nil {
