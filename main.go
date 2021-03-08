@@ -40,7 +40,7 @@ func main() {
 
 	// transaction
 	transactionRepository := transaction.NewRepository(db)
-	transactionService := transaction.NewService(transactionRepository)
+	transactionService := transaction.NewService(transactionRepository, campaignRepository)
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	router := gin.Default()
@@ -61,7 +61,7 @@ func main() {
 	api.POST("/campaign-images", authMiddleware(authService, userService), campaignHandler.UploadImage)
 
 	// transaction routes
-	api.GET("/campaigns/:id/transactions", transactionHandler.GetCampaignTransactions)
+	api.GET("/campaigns/:id/transactions", authMiddleware(authService, userService), transactionHandler.GetCampaignTransactions)
 
 	router.Run()
 }
