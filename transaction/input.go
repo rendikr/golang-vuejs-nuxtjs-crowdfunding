@@ -8,7 +8,7 @@ type GetTransactionDetailInput struct {
 }
 
 type CreateTransactionInput struct {
-	CampaignID int `json:"campaign_id"`
+	CampaignID int `json:"campaign_id" binding:"required"`
 	Amount     int `json:"amount" binding:"required"`
 	User       user.User
 }
